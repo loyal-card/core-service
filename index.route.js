@@ -22,15 +22,18 @@ router.get("/get-code", (req, res) => {
 });
 router.get("/verify-code", (req, res) => {
   // todo generate code and send back url
-  const code = req.query.code;
-  const tokenValidates = speakeasy.totp.verify({
-    secret: "123456",
-    encoding: "base32",
-    token: code
-  });
-  if (!tokenValidates) {
-    res.send("not verified");
-  }
+  // const code = req.query.code;
+  // const tokenValidates = speakeasy.totp.verify({
+  //   secret: "123456",
+  //   encoding: "base32",
+  //   token: code
+  // });
+
+  global.io.emit("FromAPI", "test")
+
+  // if (!tokenValidates) {
+  //   res.send("not verified");
+  // }
   res.send("OK");
 });
 

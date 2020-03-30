@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const util = require('util');
+const http = require("http");
+const socketIo = require("socket.io");
 
 // config should be imported before importing any other file
 const config = require('./config/config');
@@ -26,14 +28,20 @@ if (config.mongooseDebug) {
     debug(`${collectionName}.${method}`, util.inspect(query, false, 20), doc);
   });
 }
+const server = http.createServer(app);
 
+global.io = socketIo(server);
 // module.parent check is required to support mocha watch
 // src: https://github.com/mochajs/mocha/issues/1912
 if (!module.parent) {
   // listen on port config.port
-  app.listen(config.port, () => {
+  server.listen(config.port, () => {
     console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
   });
 }
+
+io.on("connection", socket => {
+  console.log("New client connected");
+});
 
 module.exports = app;

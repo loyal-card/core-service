@@ -59,6 +59,8 @@
     "method-override": "^2.3.10",
     "mongoose": "4.7.4",
     "morgan": "1.9.0",
+    "socket.io": "^2.3.0",
+    "speakeasy": "false2.0.0",
     "winston": "2.4.1"
   },
   "devDependencies": {
