@@ -7,7 +7,7 @@ const getCode = (req, res) => {
     encoding: "base32"
   });
 
-  res.send(`http://localhost:5000/api/verify-code?code=${token}`);
+  res.send(`http://localhost:5000/api/code/verify-code?code=${token}`);
 };
 
 const verifyCode = (req, res) => {
@@ -16,7 +16,8 @@ const verifyCode = (req, res) => {
   const tokenValidates = speakeasy.totp.verify({
     secret: "123456",
     encoding: "base32",
-    token: code
+    token: code,
+    window: 6
   });
   if (!tokenValidates) {
     res.send("not verified");
