@@ -1,5 +1,4 @@
 const express = require("express");
-const QRCode = require("qrcode.react");
 const { getCode, verifyCode } = require("./code.controller");
 
 const authCheck = require("../../middleware/authmiddleware");
