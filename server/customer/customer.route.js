@@ -3,29 +3,28 @@ const validate = require("express-validation");
 const paramValidation = require("../../config/param-validation");
 const {
   list,
+  get,
   create,
   customerPurchase,
+  claimCredit,
   remove,
   load,
 } = require("./customer.controller");
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-router
-  .route("/")
-  /** POST /api/customers - Create new user */
-  .post(validate(paramValidation.createCustomer), create);
+router.route("/").post(validate(paramValidation.createCustomer), create);
+
+router.route("/get").get(get);
 
 router
   .route("/purchase")
-  /** POST /api/customers/purchase - post purchase */
   .post(validate(paramValidation.purchase), customerPurchase);
+
+router.route("/claim").post(validate(paramValidation.claim), claimCredit);
 
 router
   .route("/:userId")
-  /** GET /api/users/:userId - Get user */
-
-  /** PUT /api/users/:userId - Update user */
   // .put(validate(paramValidation.updateUser), update)
 
   /** DELETE /api/users/:userId - Delete user */

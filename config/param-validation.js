@@ -16,6 +16,11 @@ module.exports = {
       amount: Joi.number().required(),
     },
   },
+  claim: {
+    body: {
+      claimAmount: Joi.number().required(),
+    },
+  },
 
   // UPDATE /api/users/:userId
   updateUser: {

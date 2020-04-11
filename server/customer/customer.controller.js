@@ -9,6 +9,17 @@ function load(req, res, next, id) {
     .catch((e) => next(e));
 }
 
+function get(req, res) {
+  Customer.findOne({ email: req.query.email })
+    .then((customer) => {
+      if (!customer) {
+        return res.status(404).send("not found");
+      }
+      return res.json(customer);
+    })
+    .catch((e) => res.status(400).send("bad request"));
+}
+
 function create(req, res, next) {
   const customer = new Customer({
     username: req.body.username,
@@ -49,20 +60,34 @@ async function customerPurchase(req, res, next) {
     currentLoopTotalConsume: newcurrentLoopTotalConsume,
     totalClaim: newTotalClaim,
   };
-  const updatedCustomer = await Customer.findOneAndUpdate(filter, update);
+
+  const updatedCustomer = await Customer.findOneAndUpdate(filter, update, {
+    new: true,
+  });
   return res.json(updatedCustomer);
 }
 
-// function update(req, res, next) {
-//   const user = req.user;
-//   user.username = req.body.username;
-//   user.mobileNumber = req.body.mobileNumber;
+async function claimCredit(req, res, next) {
+  const cusEmail = req.body.email;
+  const claimNum = req.body.claimAmount;
 
-//   user
-//     .save()
-//     .then((savedUser) => res.json(savedUser))
-//     .catch((e) => next(e));
-// }
+  const filter = { email: cusEmail };
+
+  let currentCus = await Customer.findOne(filter);
+
+  if (currentCus.availableToClaim < claimNum) {
+    return res.status(400).send("unable to claim");
+  }
+  const update = {
+    totalClaim: currentCus.totalClaim + claimNum,
+    availableToClaim: currentCus.availableToClaim - claimNum,
+  };
+
+  const updatedCustomer = await Customer.findOneAndUpdate(filter, update, {
+    new: true,
+  });
+  return res.json(updatedCustomer);
+}
 
 /**
  * Get user list.
@@ -89,4 +114,12 @@ function remove(req, res, next) {
     .catch((e) => next(e));
 }
 
-module.exports = { load, create, customerPurchase, list, remove };
+module.exports = {
+  load,
+  get,
+  create,
+  customerPurchase,
+  claimCredit,
+  list,
+  remove,
+};
