@@ -4,10 +4,10 @@ const getCode = (req, res) => {
   // todo generate code and send back url
   const token = speakeasy.totp({
     secret: "123456",
-    encoding: "base32"
+    encoding: "base32",
   });
 
-  res.send(`http://localhost:5000/api/code/verify-code?code=${token}`);
+  res.send(`${req.headers.host}/api/code/verify-code?code=${token}`);
 };
 
 const verifyCode = (req, res) => {
@@ -17,7 +17,7 @@ const verifyCode = (req, res) => {
     secret: "123456",
     encoding: "base32",
     token: code,
-    window: 6
+    window: 6,
   });
   if (!tokenValidates) {
     res.send("not verified");
