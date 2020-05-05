@@ -19,7 +19,7 @@ const staff = {
 function login(req, res, next) {
   // Ideally you'll fetch this from the db
   // Idea here was to show how jwt works with simplicity
-  if (req.body.username === "coco" && req.body.password === "coco") {
+  if (req.body.username === "coco" && req.body.password === "coco123") {
     const token = jwt.sign(
       {
         username: staff.username,

@@ -6,8 +6,9 @@ const getCode = (req, res) => {
     secret: "123456",
     encoding: "base32",
   });
-
-  res.send(`${req.headers.host}/api/code/verify-code?code=${token}`);
+  res.send(
+    `${req.protocol}://${req.headers.host}/api/code/verify-code?code=${token}`
+  );
 };
 
 const verifyCode = (req, res) => {
