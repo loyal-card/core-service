@@ -1,9 +1,15 @@
 const mongoose = require("mongoose");
 const util = require("util");
 
+const http = require("http");
+const socketIo = require("socket.io");
+
 // config should be imported before importing any other file
 const config = require("./config/config");
 const app = require("./config/express");
+const server = http.createServer(app);
+//This global is to make sure io can be used in controller.
+global.io = socketIo(server);
 
 const debug = require("debug")("express-mongoose-es6-rest-api:index");
 
@@ -31,9 +37,12 @@ if (config.mongooseDebug) {
 // src: https://github.com/mochajs/mocha/issues/1912
 if (!module.parent) {
   // listen on port config.port
-  app.listen(config.port, () => {
+  server.listen(config.port, () => {
     console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
   });
 }
+io.on("connection", (socket) => {
+  console.log("New client connected");
+});
 
 module.exports = app;

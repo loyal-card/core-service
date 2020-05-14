@@ -64,6 +64,8 @@ async function customerPurchase(req, res, next) {
   const updatedCustomer = await Customer.findOneAndUpdate(filter, update, {
     new: true,
   });
+
+  global.io.emit(`FromAPI-${cusEmail}`, JSON.stringify(updatedCustomer));
   return res.json(updatedCustomer);
 }
 
