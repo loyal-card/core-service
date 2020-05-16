@@ -58,7 +58,7 @@
     "jwks-rsa": "^1.7.0",
     "method-override": "^2.3.10",
     "mongoose": "^5.9.7",
-    "morgan": "1.9.0",
+    "morgan": "1.9.1",
     "socket.io": "^2.3.0",
     "speakeasy": "^2.0.0",
     "winston": "2.4.1"
